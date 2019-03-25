@@ -1,0 +1,11 @@
+<head>
+This is my head
+</head>
+
+<body>
+    {% for head in subheadings %}
+        <p>{{head.title}}</p>
+        <p>{{head.content|safe}}</p>
+        <br><br>
+    {% endfor %}
+</body>

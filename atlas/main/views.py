@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Subheading
 
 # Create your views here.
 
 def homepage(request):
-    return HttpResponse("Wow this is the main page")
+    return render(request=request,
+                  template_name="main/home.html",
+                  context={"subheadings": Subheading.objects.all})
