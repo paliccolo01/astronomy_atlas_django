@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Subheading
+from .models import Chapter, Subheading, Profile
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ExtendedUserCreationForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
@@ -12,7 +12,7 @@ from django.contrib import messages
 def homepage(request):
     return render(request=request,
                   template_name="main/home.html",
-                  context={"subheadings": Subheading.objects.all})
+                  context={"chapters": Chapter.objects.all})
 
 
 def register(request):
