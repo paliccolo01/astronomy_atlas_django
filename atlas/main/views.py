@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Chapter, Subheading, Profile
 from django.contrib.auth.forms import AuthenticationForm
@@ -13,6 +13,13 @@ def homepage(request):
     return render(request=request,
                   template_name="main/home.html",
                   context={"chapters": Chapter.objects.all})
+
+def detail(request, chapter_id):
+    chapter = get_object_or_404(Chapter, pk=chapter_id)
+    #matchingsubheading = Subheading.objects.filter(chapter__title)
+    return render(request,
+                  template_name="main/detail.html",
+                  context={"chapter": chapter})
 
 
 def register(request):

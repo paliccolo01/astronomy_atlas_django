@@ -1,0 +1,15 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<h1>{{ chapter.title }}</h1>
+<h3>{{ chapter.summary }}</h3>
+
+ <div>
+    {% for subheading in chapter.subheading_set.all %}
+        {{ subheading.title }}
+        <div>
+            {{ subheading.content | safe | linebreaks }}
+        </div>
+    {% endfor %}
+  </div>
+{% endblock %}
