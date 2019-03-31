@@ -48,12 +48,13 @@ def register(request):
         else:
             for msg in form.error_messages:
                 messages.error(request, form.error_messages[msg])
-    else:
-        form = ExtendedUserCreationForm()
-        profile_form = ProfileForm()
 
-        context = {'form': form, 'profile_form': profile_form}
-        return render(request, "main/register.html", context)
+
+    form = ExtendedUserCreationForm()
+    profile_form = ProfileForm()
+
+    context = {'form': form, 'profile_form': profile_form}
+    return render(request, "main/register.html", context)
 
 def logout_request(request):
     logout(request)

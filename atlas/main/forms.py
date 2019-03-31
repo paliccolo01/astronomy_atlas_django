@@ -25,4 +25,4 @@ class ExtendedUserCreationForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('birth_date', 'division', 'bookmark')
+        fields = ('birth_date', 'division')
