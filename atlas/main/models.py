@@ -11,6 +11,7 @@ class Chapter(models.Model):
     class Meta:
         verbose_name = "Chapter"
         verbose_name_plural = "Chapters"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.title
@@ -19,6 +20,11 @@ class Subheading(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = RichTextUploadingField(blank=True)
+
+    class Meta:
+        verbose_name = "Subheading"
+        verbose_name_plural = "Subheadings"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.title
@@ -36,6 +42,7 @@ class Exam(models.Model):
     name = models.CharField(max_length=200)
     summary = models.CharField(max_length=200, blank=True)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    #mennyi legyen az a pontszam aminel atengeded mondjuk szazalekban
 
     class Meta:
         verbose_name = "Exam"

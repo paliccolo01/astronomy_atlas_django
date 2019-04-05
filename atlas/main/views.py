@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Chapter, Subheading, Profile
+from .models import Chapter, Subheading, Profile, Exam, Examlog, Question, Answer
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ExtendedUserCreationForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
@@ -21,6 +21,12 @@ def detail(request, chapter_id):
                   template_name="main/detail.html",
                   context={"chapter": chapter})
 
+def quiz(request, exam_id):
+    exam = get_object_or_404(Exam, pk=exam_id)
+    #matchingsubheading = Subheading.objects.filter(chapter__title)
+    return render(request,
+                  template_name="main/quiz.html",
+                  context={"exam": exam})
 
 def register(request):
     if request.method == 'POST':

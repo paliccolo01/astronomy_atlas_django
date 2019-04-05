@@ -1,0 +1,14 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<h1>{{ exam.name }}</h1>
+<h3>{{ exam.summary }}</h3>
+
+ <div>
+    {% for question in question_set.all %}
+        <div>
+            {{ question.text | safe | linebreaks}}
+        </div>
+    {% endfor %}
+  </div>
+{% endblock %}
