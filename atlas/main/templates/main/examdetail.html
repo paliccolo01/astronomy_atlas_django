@@ -1,0 +1,20 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<p class="flow-text">
+<h1>{{ exam.name }}</h1>
+<h3>{{ exam.summary }}</h3>
+</p>
+ <div>
+     <p class="flow-text">
+    {% for q in exam.question_set.all %}
+     <h3>{{ q.text | safe | linebreaks  }}</h3>
+        <div>
+            {% for a in q.answer_set.all %}
+                {{ a.text | safe | linebreaks }}
+            {% endfor %}
+        </div>
+    {% endfor %}
+     </p>
+  </div>
+{% endblock %}

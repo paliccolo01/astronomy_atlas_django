@@ -21,12 +21,20 @@ def detail(request, chapter_id):
                   template_name="main/detail.html",
                   context={"chapter": chapter})
 
-def quiz(request, exam_id):
-    exam = get_object_or_404(Exam, pk=exam_id)
-    #matchingsubheading = Subheading.objects.filter(chapter__title)
-    return render(request,
+def quiz(request):
+    return render(request=request,
                   template_name="main/quiz.html",
-                  context={"exam": exam})
+                  context={"exams": Exam.objects.all})
+
+def examdetail(request, exam_id):
+    exam = get_object_or_404(Exam, pk=exam_id)
+    equestions = [Question.objects.filter(id=exam_id)]
+    eanswers = [Answer.objects.filter(id=exam_id)]
+    #my_query = Answer.objects.filter(Question__question)
+
+    return render(request,
+                  template_name="main/examdetail.html",
+                  context= {"exam": exam, "equestions": equestions, "eanswers": eanswers})
 
 def register(request):
     if request.method == 'POST':
