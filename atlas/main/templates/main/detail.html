@@ -2,17 +2,17 @@
 
 {% block content %}
 <p class="flow-text">
-<h1>{{ chapter.title }}</h1>
-<h3>{{ chapter.summary }}</h3>
+    <h1>{{ chapter.title }}</h1>
+    <h3>{{ chapter.summary }}</h3>
 </p>
  <div>
      <p class="flow-text">
-    {% for subheading in chapter.subheading_set.all %}
-     <h3>{{ subheading.title }}</h3>
-        <div>
-            {{ subheading.content | safe | linebreaks }}
-        </div>
-    {% endfor %}
+        {% for subheading in chapter.subheading_set.all %}
+         <h3>{{ subheading.title }}</h3>
+            <div>
+                {{ subheading.content | safe | linebreaks }}
+            </div>
+        {% endfor %}
      </p>
   </div>
 {% endblock %}
