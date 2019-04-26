@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Chapter, Subheading, Profile, Exam, Examlog, Question, Answer
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ExtendedUserCreationForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.urls import reverse
 
 
 # Create your views here.
@@ -21,9 +22,13 @@ def detail(request, chapter_id):
                   context={"chapter": chapter})
 
 def quiz(request):
-    return render(request=request,
-                  template_name="main/quiz.html",
-                  context={"exams": Exam.objects.all})
+    if request.user.is_authenticated:
+        return render(request=request,
+                      template_name="main/quiz.html",
+                      context={"exams": Exam.objects.all})
+    else:
+        messages.info(request, "Please login first!")
+        return redirect("main:login")
 
 def examdetail(request, exam_id):
     exam = get_object_or_404(Exam, pk=exam_id)
@@ -38,14 +43,24 @@ def quizdone(request, exam_id):
     exam = get_object_or_404(Exam, pk=exam_id)
     equestions = [Question.objects.filter(id=exam_id)]
     eanswers = [Answer.objects.filter(id=exam_id)]
-    if request.method=="POST":
-        postdatacollected=request.POST['choice']
-        print (postdatacollected)
+
+    total_good_answers = 0
+    if request.method == "POST":
+        for score_key in [key for key in request.POST.keys() if key.startswith('choice[')]:
+            print(score_key)
+            myvar = request.POST.get(score_key)
+            print(myvar)
+            if myvar == "True":
+                total_good_answers += 1
+        print(total_good_answers)
+
+    current_user = request.user
+    print (current_user)
 
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
-    return HttpResponseRedirect(reverse('main:results', args=(question.id,)))
+    return HttpResponseRedirect(reverse('main:results', args=(exam.id,)))
 
 def results(request, exam_id):
     exam = get_object_or_404(Exam, pk=exam_id)

@@ -17,7 +17,7 @@
                     <fieldset id="group{{ q.id }}">
                         {% for a in q.answer_set.all %}
                             <label>
-                            <input class="with-gap" input type="radio" name="choice{{ q.id }}" id="{{ q.id }}a{{ forloop.counter }}" value="{{ a.id }}">
+                            <input class="with-gap" input type="radio" name="choice[{{ q.id }}]" id="{{ q.id }}a{{ forloop.counter }}" value="{{ a.is_valid }}">
                             <span for="{{ q.id }}a{{ forloop.counter }}">{{ a.text | safe | linebreaks }}</span><br><br><br>
                             </label>
                         {% endfor %}
