@@ -44,27 +44,50 @@ def quizdone(request, exam_id):
     equestions = [Question.objects.filter(id=exam_id)]
     eanswers = [Answer.objects.filter(id=exam_id)]
 
+    #equestionscounter = Question.objects.filter(id=exam_id).count(Question.id)
+    #print("ennyi kerdes volt osszesen: " + str(equestionscounter))
+
     total_good_answers = 0
+    quizsuccess = False
+    quizgoal = exam.goal
     if request.method == "POST":
+        #using list comprehension:
         for score_key in [key for key in request.POST.keys() if key.startswith('choice[')]:
-            print(score_key)
+            #print("score_key: " + str(score_key))
             myvar = request.POST.get(score_key)
-            print(myvar)
+            #print("myvar: " + str(myvar))
             if myvar == "True":
                 total_good_answers += 1
-        print(total_good_answers)
 
-    current_user = request.user
-    print (current_user)
+        if exam.goal <= total_good_answers:
+            quizsuccess = True
+        else:
+            quizsuccess = False
+
+        request.session['total_good_answers'] = total_good_answers
+        request.session['quizgoal'] = quizgoal
+        request.session['quizsuccess'] = quizsuccess
+        #print("nyertel, mert a cel: " + str(exam.goal) +" es ennyi pontod lett: " + str(total_good_answers))
+        current_user = request.user
+        examlog = Examlog()
+        examlog.exam = exam
+        examlog.participant = current_user
+        examlog.achieved = total_good_answers
+        examlog.passed = quizsuccess
+        examlog.attempt += 1
+        examlog.save()
 
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
-    return HttpResponseRedirect(reverse('main:results', args=(exam.id,)))
+    return HttpResponseRedirect(reverse('main:results', args=(exam_id,)))
 
 def results(request, exam_id):
     exam = get_object_or_404(Exam, pk=exam_id)
-    return render(request, 'main/results.html', {'exam':exam})
+    total_good_answers = request.session['total_good_answers']
+    quizgoal = request.session['quizgoal']
+    quizsuccess = request.session['quizsuccess']
+    return render(request, 'main/results.html', {'exam':exam, 'total_good_answers':total_good_answers, 'quizgoal':quizgoal, 'quizsuccess':quizsuccess,})
 
 def register(request):
     if request.method == 'POST':

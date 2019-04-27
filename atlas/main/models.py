@@ -39,14 +39,15 @@ class Profile(models.Model):
         return self.user.username
 
 class Exam(models.Model):
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     summary = models.CharField(max_length=200, blank=True)
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    #mennyi legyen az a pontszam aminel atengeded mondjuk szazalekban
+    goal = models.PositiveSmallIntegerField(default=1)
 
     class Meta:
         verbose_name = "Exam"
         verbose_name_plural = "Exams"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.name
@@ -59,6 +60,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Question"
         verbose_name_plural = "Questions"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.text
@@ -71,6 +73,7 @@ class Answer(models.Model):
     class Meta:
         verbose_name = "Answer"
         verbose_name_plural = "Answers"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.text
@@ -79,11 +82,13 @@ class Examlog(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     participant = models.CharField(max_length=200, blank=True)
     achieved = models.PositiveSmallIntegerField(default=1)
+    passed = models.BooleanField(default=False)
     attempt = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         verbose_name = "Examlog"
         verbose_name_plural = "Examlogs"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.participant
