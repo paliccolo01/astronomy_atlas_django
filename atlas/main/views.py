@@ -89,6 +89,10 @@ def results(request, exam_id):
     quizsuccess = request.session['quizsuccess']
     return render(request, 'main/results.html', {'exam':exam, 'total_good_answers':total_good_answers, 'quizgoal':quizgoal, 'quizsuccess':quizsuccess,})
 
+def account(request):
+    return HttpResponse("This is the account page")
+
+
 def register(request):
     if request.method == 'POST':
         form = ExtendedUserCreationForm(request.POST)

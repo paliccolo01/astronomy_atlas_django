@@ -1,0 +1,4 @@
+Django==2.1.5
+django_ckeditor==5.6.1
+Pillow==5.4.1
+psycopg2==2.7.7
