@@ -1,0 +1,7 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<p class="flow-text">
+    <h1>{{ user.username }}</h1>
+    Hello {{ user.last_name }} {{ user.first_name }}
+{% endblock %}

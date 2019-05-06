@@ -12,7 +12,7 @@
         <form action="{% url 'main:quizdone' exam.id %}" method="post">
             {% csrf_token %}
             {% for q in exam.question_set.all %}
-             <h3>{{ q.text | safe | linebreaks  }}</h3>
+             <h3>{{ q.text | safe | linebreaks }}</h3>
                 <div>
                     <fieldset id="group{{ q.id }}">
                         {% for a in q.answer_set.all %}

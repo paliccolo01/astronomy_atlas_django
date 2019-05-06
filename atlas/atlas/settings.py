@@ -132,3 +132,13 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
+
+#Ckeditor S3 to work
+AWS_QUERYSTRING_AUTH = False
+
+#to be able to use allowedContent
+CKEDITOR_CONFIGS = {
+    "default": {
+        "removePlugins": "stylesheetparser",
+    }
+}

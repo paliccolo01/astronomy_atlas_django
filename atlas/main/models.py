@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.html import format_html
 
 # Create your models here.
 class Chapter(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=False)
     summary = models.CharField(max_length=200, blank=True)
 
     class Meta:
@@ -18,7 +19,7 @@ class Chapter(models.Model):
 
 class Subheading(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=False)
     content = RichTextUploadingField(blank=True)
 
     class Meta:
@@ -33,16 +34,16 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth_date = models.DateField(blank=True)
     division = models.CharField(max_length=30, blank=True)
-    bookmark = models.PositiveSmallIntegerField(default=1)
+    bookmark = models.PositiveSmallIntegerField(default=1, blank=False)
 
     def __str__(self):
         return self.user.username
 
 class Exam(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, blank=False)
     summary = models.CharField(max_length=200, blank=True)
-    goal = models.PositiveSmallIntegerField(default=1)
+    goal = models.PositiveSmallIntegerField(default=1, blank=False)
 
     class Meta:
         verbose_name = "Exam"
@@ -55,7 +56,7 @@ class Exam(models.Model):
 class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     text = RichTextUploadingField(blank=False)
-    amount = models.PositiveSmallIntegerField(default=1)
+    amount = models.PositiveSmallIntegerField(default=1, blank=False)
 
     class Meta:
         verbose_name = "Question"
@@ -63,7 +64,7 @@ class Question(models.Model):
         ordering = ["pk"]
 
     def __str__(self):
-        return self.text
+        return format_html(self.text)
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -80,7 +81,7 @@ class Answer(models.Model):
 
 class Examlog(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
-    participant = models.CharField(max_length=200, blank=True)
+    participant = models.CharField(max_length=200, blank=False)
     achieved = models.PositiveSmallIntegerField(default=1)
     passed = models.BooleanField(default=False)
     attempt = models.PositiveSmallIntegerField(default=0)
@@ -91,4 +92,4 @@ class Examlog(models.Model):
         ordering = ["pk"]
 
     def __str__(self):
-        return self.participant
+        return '%s - %s - %s' % (self.exam.name, self.participant, self.passed)

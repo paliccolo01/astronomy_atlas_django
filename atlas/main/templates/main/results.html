@@ -2,8 +2,8 @@
 
 {% block content %}
     {% if quizsuccess == True %}
-        Success! Congratulations you have reached a total of: {{ total_good_answers }} points out of {{ quizgoal }}
+        Siker! Gratulálunk elértél {{ total_good_answers }} pontot és a ponthatár {{ quizgoal }} volt.
     {% elif quizsuccess == False%}
-        Better luck next time! You have reached a total of: {{ total_good_answers }} points out of {{ quizgoal }}
+        Sok szerencsét legközelebb! Ezúttal {{ total_good_answers }} pontot értél el, de a ponthatár {{ quizgoal }} volt.
     {% endif %}
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 <p class="flow-text">
-    <h1>{{ chapter.title }}</h1>
+    <h1>{{ chapter.id }}. {{ chapter.title }}</h1>
     <h3>{{ chapter.summary }}</h3>
 </p>
  <div>
@@ -10,7 +10,7 @@
         {% for subheading in chapter.subheading_set.all %}
          <h3>{{ subheading.title }}</h3>
             <div>
-                {{ subheading.content | safe | linebreaks }}
+                {{ subheading.content | safe }}
             </div>
         {% endfor %}
      </p>

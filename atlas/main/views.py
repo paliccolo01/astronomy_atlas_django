@@ -90,7 +90,8 @@ def results(request, exam_id):
     return render(request, 'main/results.html', {'exam':exam, 'total_good_answers':total_good_answers, 'quizgoal':quizgoal, 'quizsuccess':quizsuccess,})
 
 def account(request):
-    return HttpResponse("This is the account page")
+    current_user = request.user
+    return render(request, 'main/account.html', {'current_user':current_user})
 
 
 def register(request):
@@ -98,7 +99,9 @@ def register(request):
         form = ExtendedUserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
 
-        if form.is_valid() and profile_form.is_valid:
+        if form.is_valid() and profile_form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
             user = form.save()
 
             profile = profile_form.save(commit=False)
@@ -106,13 +109,11 @@ def register(request):
 
             profile.save()
 
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            messages.success(request, "New account created: {}".format(username))
+            messages.success(request, "Új felhasználó sikeresen létrehozva: {}".format(username))
 
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.info(request, "You are now logged in as: {}".format(username))
+            messages.info(request, "Belépve mint: {}".format(username))
 
             return redirect("main:homepage")
 
@@ -129,7 +130,7 @@ def register(request):
 
 def logout_request(request):
     logout(request)
-    messages.info(request, "Logged out successfully!")
+    messages.info(request, "Sikeres kijelentkezés!")
     return redirect("main:homepage")
 
 def login_request(request):
@@ -141,12 +142,12 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, "You are now logged in as: {}".format(username))
+                messages.info(request, "Belépve mint: {}".format(username))
                 return redirect("main:homepage")
             else:
-                messages.info(request, "Invalid username or password")
+                messages.info(request, "Nem megfelelő felhasználó név vagy jelszó")
         else:
-            messages.info(request, "You did not fill out the form correctly!")
+            messages.info(request, "Nem töltötted ki jól az űrlapot!")
 
 
     form = AuthenticationForm()
