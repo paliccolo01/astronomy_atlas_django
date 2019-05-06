@@ -1,0 +1,33 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<p class="flow-text">
+    <h1>{{ exam.name }}</h1>
+    <h3>{{ exam.summary }}</h3>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+</p>
+
+<div>
+     <p class="flow-text">
+        <form action="{% url 'main:quizdone' exam.id %}" method="post">
+            {% csrf_token %}
+            {% for q in exam.question_set.all %}
+             <h3>{{ q.text | safe | linebreaks  }}</h3>
+                <div>
+                    <fieldset id="group{{ q.id }}">
+                        {% for a in q.answer_set.all %}
+                            <label>
+                            <input class="with-gap" input type="radio" name="choice[{{ q.id }}]" id="{{ q.id }}a{{ forloop.counter }}" value="{{ a.is_valid }}">
+                            <span for="{{ q.id }}a{{ forloop.counter }}">{{ a.text | safe | linebreaks }}</span><br><br><br>
+                            </label>
+                        {% endfor %}
+                    </fieldset>
+                </div>
+            {% endfor %}
+             <div>
+                <input type="submit" value="Bead">
+            </div>
+        </form>
+     </p>
+</div>
+{% endblock %}

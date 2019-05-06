@@ -1,0 +1,19 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+ <div class="row">
+    {% for chap in chapters %}
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">{{chap.title}}</span>
+              <p>{{chap.summary}}</p>
+            </div>
+            <div class="card-action">
+              <a href="{% url 'main:detail' chap.id %}">Megnyit</a>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+{% endblock %}

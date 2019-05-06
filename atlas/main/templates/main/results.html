@@ -1,0 +1,9 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+    {% if quizsuccess == True %}
+        Success! Congratulations you have reached a total of: {{ total_good_answers }} points out of {{ quizgoal }}
+    {% elif quizsuccess == False%}
+        Better luck next time! You have reached a total of: {{ total_good_answers }} points out of {{ quizgoal }}
+    {% endif %}
+{% endblock %}
